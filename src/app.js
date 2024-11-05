@@ -1,20 +1,20 @@
 
 import express from "express";
+import conectaNaDatabase from "./config/dbConnect.js";
+import livro from "./models/Livro.js";
+
+const conexao = await conectaNaDatabase();
+
+conexao.on("error", (erro) => {
+    console.error("Erro de conexão!", erro);
+});
+
+conexao.once("open", () => {
+    console.log("Conexão com o banco feita com sucesso!");
+});
 
 const app = express();
 app.use( express.json() );
-
-const livros = [
-
-    {
-        id: 1,
-        titulo: "2001: Uma Odisséia no Espaço"
-    },
-    {
-        id: 2,
-        titulo: "O Hobbit"
-    }
-]
 
 app.get("/", (req, res) => {
 
@@ -22,11 +22,13 @@ app.get("/", (req, res) => {
 
 } );
 
-app.get("/livros", (req, res) => {
 
-    res.status(200).json(livros);
 
-} );
+
+///////////////////////////
+
+
+
 
 // Tratando a requisição POST:
 app.post("/livros", (req, res) => {
